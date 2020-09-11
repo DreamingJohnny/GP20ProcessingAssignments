@@ -1,9 +1,25 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Assignment02 extends PApplet {
+
 float xStart,yStart,xEnd=0,yEnd=0,spaceBetweenLines,numberOfLines;
 
-void setup() {
+public void setup() {
 
 //Design
-	size(778, 778);
+	
 	background(255,255,255);
 	stroke(229);
 	strokeWeight(2);
@@ -19,7 +35,7 @@ void setup() {
 
 }
 
-void draw() {
+public void draw() {
 /*This was my first attempt, however, since every 3rd line should be black I resolved
 to make a second parabolic curve along the bottom-right part of the screen */
 	while(xStart <= height/2) {
@@ -59,4 +75,14 @@ for (int i = 0; i < numberOfLines; ++i) {
 
 }
 
+}
+  public void settings() { 	size(778, 778); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "Assignment02" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }
