@@ -1,12 +1,9 @@
 //Is this an example of a disgusting "magic number" would Robert say?
-float circleDiamater, toDivideBy = 100, circleInerta = 0.004;
+float circleDiamater, toDivideBy = 100, circleInerta = 5.0, circleFriction = 0.01;
 
 PVector circlePositioning = new PVector();
 PVector circleGoal = new PVector();
 PVector circleVelocity = new PVector();
-//Is this an example of a disgusting "magic number" would Robert say?
-//PVector circleInerta = new PVector(2,2);
-PVector circleFriction = new PVector(0.01,0.01);
 
 void setup() {
 
@@ -28,10 +25,8 @@ void draw() {
 	
 	background(255,255,255);
 
-	// /*This is to make it so that the circle will halt if moving too slowly
-	// Partly to make sure it does not vibrate at the edge for some reason
-	// Now that it is circleVelocity compared to circleDrag I'm unsure how that will compare, will it compare the sum to the sum?
-
+	/*This is to make it so that the circle will halt if moving too slowly
+	Partly to make sure it does not vibrate at the edge for some reason*/
 	if ((circleVelocity.x + circleVelocity.y <= circleInerta) && (circleVelocity.x + circleVelocity.y >= (circleInerta*=-1)))  {
 
 		circleVelocity.x = 0;
@@ -40,7 +35,9 @@ void draw() {
 	it would mean less code for the program to check I think,
 	seeing as it can just check and move on if the "outer" conditions does not apply, rather than needing to go into the loop
 	to check both x and y values*/	
-	}else if (circlePositioning.x < 1 || circlePositioning.x > width || circlePositioning.y < 1 || circlePositioning.y > height) {
+	}
+
+	if (circlePositioning.x < 1 || circlePositioning.x > width || circlePositioning.y < 1 || circlePositioning.y > height) {
 		
 		if (circlePositioning.x < 1 || circlePositioning.x > width) {
 			
@@ -51,18 +48,36 @@ void draw() {
 				circleVelocity.y *= -1;
 
 		}		
+	}else {//I can't think of a better way right now for fixing this. Since it needs to check velocity for each solar at a time.
+		
+		if (circleVelocity.x > circleInerta) {
+
+			circleVelocity.x = circleVelocity.x - circleFriction;
+			
+		}
+
+		if (circleVelocity.y > circleInerta) {
+
+			circleVelocity.y = circleVelocity.y - circleFriction;
+			
+		}
+
+		if (circleVelocity.x < (circleInerta*-1)) {
+
+			circleVelocity.x = circleVelocity.x + circleFriction;
+			
+		}
+
+		if (circleVelocity.y < (circleInerta*-1)) {
+
+			circleVelocity.y = circleVelocity.y + circleFriction;
+			
+		}
 	}
-	// 	/*The way I figure it this should gradually slow the circle down.
-	// 	And adding it here should make the code read more "effective" seeing as this is only applied when the ball isn't already still*/
 
 	circlePositioning.add(circleVelocity);
 
 	ellipse(circlePositioning.x,circlePositioning.y,circleDiamater,circleDiamater);
-
-
-	//Add friction, might use a friction PVektor instead of a friction float here, look later.
-
-	//When hitting edge, might become problem with my friction var sending it "backwards"
 
 }
 void mouseClicked() {
@@ -73,6 +88,7 @@ void mouseClicked() {
 void mouseDragged() {
 	//TODO check if an if statement, in draw will help line to not vibrate
 	line(circlePositioning.x,circlePositioning.y,mouseX,mouseY);
+
 }
 void mouseReleased() { 
 	//So, this will save the vector for the position where user lets go of the mouse.
@@ -81,5 +97,4 @@ void mouseReleased() {
 	circleVelocity = circleGoal.sub(circlePositioning);
 	circleVelocity = circleVelocity.div(toDivideBy);
 
-	
 }
