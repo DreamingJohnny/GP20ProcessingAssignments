@@ -1,18 +1,30 @@
 /*
-Using the input example from the lesson. Make it so a circle/character can move left-right-up-down.
+Assignment
+Start by making a copy from the "Input and Movement" lesson assignment, so we get a character that we can move on the screen.
 
-Create input that gives the circle/character acceleration when it moves.
+Create a player class and move as much code out from the main file as possible.
+(Let time and delta time still be calculated in the main file)
 
-Make it deaccelerate down to a standstill when no key is pressed.
+Add the Ball class from this lesson.
 
-Use deltaTime to control movement every update.
+Add size and color to the ball class.
+
+Make the ball class handle bounces at the edge of the screen.
+
+Create 10 balls that can bounce around the screen.
+
+Check if the player collides with a ball.
+
+Make some kind of Game Over screen when the player gets hit.
 
 Extracurricular
-Change the program to make the character screen wrap. If it goes out from the left of the screen when it enters on the right and vice versa. The character should not be able to leave the screen up or down.
+Create a ball manager class so we can keep the main file clean.
 
-Use the PVector class to handle position and velocity.
+Add a new ball every 3 second (up to a max of 100 balls).
 
-Pressing g on the keyboard should toggle gravity on or off. With gravity on the circle/character should fall down and bounce on the bottom of the screen.
+Add a restart function so that we can press a key to restart the game.
+
+Make sure the new balls don't spawn on the player.
 */
 
 
