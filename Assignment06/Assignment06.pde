@@ -28,18 +28,18 @@ Make sure the new balls don't spawn on the player.
 */
 PlayerAvatar firstPlayer;
 
-//Time variables
+//Time markers
 float deltaTime;
 long passedTime;
 long currentTime;
 
 void setup()
 {
-	//Set our window size
+	//Art markers
 	size(640,480);
 	background(255, 255, 255);
 
-	//call player constructor with width of screen as argument (to set size)
+	//call player constructor
 	firstPlayer = new PlayerAvatar();
 
 }
@@ -55,12 +55,9 @@ void draw()
 
 	//draw player char on screen
 	firstPlayer.draw();
-	
-	//Now we need an update function, so should that function then check for input? should there be a boolean for input?
-	//We will begin by making a function called playerMovement and pass the player into that function and then have him returned,
-	//in the function we will then change players position
 
-	//firstPlayer.playerMoving(firstPlayer, deltaTime);
+	//function for moving char
+	firstPlayer.moving();
 
 	passedTime = currentTime;
 }

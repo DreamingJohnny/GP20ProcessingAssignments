@@ -6,70 +6,59 @@ class PlayerAvatar{
 	PVector movement = new PVector();
 
 	//Vars setting up the circle, speed etc.
-	float jerk;
-	float drag;
-	float speed;
-	float maxSpeed;
+	float jerk = 2.0;
+	float drag = 0.1;
+	float speed = 25;
+	float maxSpeed = 40;
+
+	//I don't want the circle to have absolute proportions, but I want it to be based on the size of the screen
+	float sizeAsFractionOfScreen = 40;
 	float radius;
-	//I don't want the circle to have absolute proportions, but I want it to be based on the size of the screen
-	float sizeAsFractionOfScreen;
 
 
-public PlayerAvatar(){
+	PlayerAvatar(){
 
-	PVector position = new PVector(320, 240);
-	PVector velocity = new PVector();
-	PVector acceleration = new PVector();
-	PVector movement = new PVector();
+	position.x = width / 2;
+	position.y = height / 2;
 
-	//Vars setting up the circle, speed etc.
-	float jerk = 1.05;
-	float drag = 0.2;
-	float speed = 15;
-	float maxSpeed = 30;
-
-	//I don't want the circle to have absolute proportions, but I want it to be based on the size of the screen
-	float sizeAsFractionOfScreen = 7;
-	float radius = 20;
+	radius = width / sizeAsFractionOfScreen;
 
 }
 
 void draw() {
         //Draw our player with red color.
         fill(255, 0, 0);
-        ellipse(position.x, position.y, radius, radius);
+        ellipse(position.x, position.y, radius * 2, radius * 2);
     }
 
-PlayerAvatar playerMoving(PlayerAvatar playerToMove, float deltaTime) {
+void moving() {
 
 	//Need to check later, is this an amazing moment when I could use this instead?
 	//Maybe I don't even need to pass something back? If I change what is instead?
-	playerToMove.acceleration = input();
+	acceleration = input();
 
-	playerToMove.acceleration.mult(jerk * drag * speed * deltaTime);
+	acceleration.mult(jerk * drag * speed * deltaTime);
 
 	//If no input, length of acceleration vector is 0, so we should softly slow down
-	if (playerToMove.acceleration.mag() == 0)
+	if (acceleration.mag() == 0)
 	{
 		//Use our direction to create opposite breaking force.
-  		playerToMove.acceleration.x -= velocity.x * drag * speed * deltaTime;
-  		playerToMove.acceleration.y -= velocity.y * drag * speed * deltaTime;
+  		acceleration.x -= velocity.x * drag * speed * deltaTime;
+  		acceleration.y -= velocity.y * drag * speed * deltaTime;
 	}
 
 	//Update Velocity by adding acceleration.
-	playerToMove.velocity.add(acceleration);
+	velocity.add(acceleration);
 
 	//sets a hard cap on speed
-	playerToMove.velocity.limit(maxSpeed);
+	velocity.limit(maxSpeed);
 
 	//Should this really be a vector that is owned by this object?
 	//Would it not be much more efficient if this were a vector in the function?
-	playerToMove.movement = playerToMove.velocity.copy();
-	playerToMove.movement.mult(speed * deltaTime);
+	movement = velocity.copy();
+	movement.mult(speed * deltaTime);
 	//Add our adjusted velocity to our player
-	playerToMove.position.add(movement);
-
-	return playerToMove;
+	position.add(movement);
 
 }
 }
