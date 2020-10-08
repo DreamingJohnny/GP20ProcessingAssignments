@@ -26,21 +26,39 @@ Add a restart function so that we can press a key to restart the game.
 
 Make sure the new balls don't spawn on the player.
 */
-PlayerAvatar firstPlayer;
+PlayerAvatar playerOne;
+boolean isPlayerHit;
+
+//Var for ball
+Ball[] balls;
+int amountOfBalls = 10;
+
+//var for gamestate
+boolean isGameOver;
+
+PFont gameText;
+color textColor;
+String gameOverMessage = "GAME OVER";
+
 
 //Time variables
 float deltaTime;
 long passedTime;
-long currentTime;
+long currentTime; 
 
 void setup()
 {
 	//Set our window size
-	size(640,480);
+	size(880,720);
 	background(255, 255, 255);
 
-	//call player constructor with width of screen as argument (to set size)
-	firstPlayer = new PlayerAvatar();
+	gameText = createFont("Arial", 36);
+	textColor = color(7, 167, 23);
+
+	playerOne = new PlayerAvatar();
+	
+	balls = new Ball[amountOfBalls];
+	spawnBalls();
 
 }
 
@@ -50,17 +68,71 @@ void draw()
 
 	//These lines creates a value in time that allows me to compare and compensate for possible lag.
 	currentTime = millis();
-  	deltaTime = (currentTime - passedTime);
+	deltaTime = (currentTime - passedTime);
 	deltaTime *= 0.001f;
 
-	//draw player char on screen
-	firstPlayer.draw();
-	
-	//Now we need an update function, so should that function then check for input? should there be a boolean for input?
-	//We will begin by making a function called playerMovement and pass the player into that function and then have him returned,
-	//in the function we will then change players position
+	if (isGameOver)
+	{
+		textFont(gameText, 46);
+		fill(textColor);
+		textAlign(CENTER);
 
-	//firstPlayer.playerMoving(firstPlayer, deltaTime);
+		text(gameOverMessage, width / 2, height / 3);
+	}
+	else
+	{
+		//draw player char on screen
+		playerOne.draw();
 
+		ballHandler();
+	}
 	passedTime = currentTime;
+}
+void spawnBalls()
+{
+	for (int i = 0; i < balls.length; i++)
+	{
+		balls[i] = new Ball();	
+	}
+}
+void ballHandler()
+{
+	for (int i = 0; i < balls.length; i++)
+	{
+		balls[i].update();
+		balls[i].show();
+	}
+
+	isGameOver = checkGameState();
+}
+boolean checkGameState()
+{
+	for (int i = 0; i < balls.length; i++)
+	{
+		isPlayerHit = hitDetection(balls[i], playerOne);
+
+		if (isPlayerHit)
+		{
+			return true;
+		}	
+	}
+
+	return false;
+}
+boolean hitDetection(Ball projectile, PlayerAvatar target)
+{
+	float maxDistance = projectile.radius + target.radius;
+
+	if(abs(projectile.position.x - target.position.x) > maxDistance || abs(projectile.position.y - target.position.y) > maxDistance)
+	{
+		return false;
+	}
+	else if(dist(projectile.position.x, projectile.position.y, target.position.x, target.position.y) > maxDistance)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
