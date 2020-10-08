@@ -6,7 +6,7 @@ TODO: Fix color on font, slimy green on game over?
 TODO: Create effect that background fades on game over,
 TODO: Set better looking background in game,
 TODO: Later, learn to print time in a more elegant way
-TODO: Later I need to check how millis works,because it is time since game began right? So we need to reset it first time draw starts...
+TODO: Later I need to check how millis works, because it is time since game began right? So we need to reset it first time draw starts...
 */
 
 Character[] characters;

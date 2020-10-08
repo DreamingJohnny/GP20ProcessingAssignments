@@ -69,8 +69,3 @@ boolean hitDetection(Character carrier, Character victim)
 		return true;
 	}
 }
-// void zombieChangesDirection()
-// 	{
-// 		velocity.x = random(5) - 2.5;
-// 		velocity.y = random(5) - 2.5;
-// 	}
